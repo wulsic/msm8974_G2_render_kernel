@@ -1,13 +1,13 @@
 #!/bin/bash
-build=/home/renderbroken/android/source/zips/msm8974-zips/
+build=/home/wulsic/D802MULTIROM/kernel/zips/msm8974-zips/
 kernel="RenderKernel"
 
 ##### Main Toolchain
-#toolchain=/home/renderbroken/android/source/toolchains/g2-linux-gnueabi-4.9.3/bin
+#toolchain=/home/wulsic/D802MULTIROM/kernel/toolchains/g2-linux-gnueabi-4.9.3/bin
 #####
 
 ##### Test Toolchain
-toolchain=/home/renderbroken/android/source/toolchains/linaro-arm-eabi-4.10/bin
+toolchain=/home/wulsic/D802MULTIROM/kernel/toolchains/linaro-arm-eabi-4.10/bin
 #####
 
 toolchain2="arm-eabi-"
@@ -36,7 +36,7 @@ case "$choice" in
 	"d802")
 		variant="d802"
 		config="d802_defconfig"
-		ramdisk=/home/renderbroken/android/source/kernel/msm8974_G2_render_kernel_ramdisk/ramdisk/d802.lz4
+		ramdisk=/home/wulsic/D802MULTIROM/kernel/msm8974_G2_render_kernel_ramdisk/ramdisk/d802.lz4
 		break;;
 	"d803")
 		variant="d803"
@@ -91,13 +91,13 @@ case "$target" in
 	"aosp")
 		rdflag=2
 		rom="LP"
-		ramdisk=/home/renderbroken/android/source/kernel/msm8974_G2_render_kernel_ramdisk/ramdisk_android_L
+		ramdisk=/home/wulsic/D802MULTIROM/kernel/msm8974_G2_render_kernel_ramdisk/ramdisk_android_L
 		break;;
 esac
 done
 
 # Begin commands
-rm -rf /home/renderbroken/android/source/out/g2/*
+rm -rf /home/wulsic/D802MULTIROM/kernel/out/g2/*
 echo "Checking for build..."
 if [ -f ozip/boot.img ]; then
 	read -p "Previous build found, clean working directory..(y/n)? : " cchoice
@@ -125,7 +125,7 @@ if [ -f ozip/boot.img ]; then
 	esac
 fi
 if [ -f arch/arm/boot/"$kerneltype" ]; then
-	cp arch/arm/boot/"$kerneltype" /home/renderbroken/android/source/out/g2
+	cp arch/arm/boot/"$kerneltype" /home/wulsic/D802MULTIROM/kernel/out/g2
 	rm -rf ozip/system/modules/*
 	mkdir -p ozip/system/lib/modules
 	find . -name "*.ko" -exec cp {} ozip/system/lib/modules \;
@@ -160,8 +160,8 @@ if [ $rdflag = 1 ]; then
 	echo "Using prebuilt ramdisk..."
 elif [ $rdflag = 2 ]; then
 	echo "Creating AOSP Ramdisk..."
-	./mkbootfs $ramdisk | gzip > /home/renderbroken/android/source/out/g2/ramdisk.gz
-	ramdisk=/home/renderbroken/android/source/out/g2/ramdisk.gz
+	./mkbootfs $ramdisk | gzip > /home/wulsic/D802MULTIROM/kernel/out/g2/ramdisk.gz
+	ramdisk=/home/wulsic/D802MULTIROM/kernel/out/g2/ramdisk.gz
 else
 	echo "No ramdisk found..."
 	exit 0;
@@ -169,7 +169,7 @@ fi
 
 echo "Making DT.img..."
 if [ -f arch/arm/boot/$kerneltype ]; then
-	./dtbTool -s 2048 -o /home/renderbroken/android/source/out/g2/dt.img arch/arm/boot/
+	./dtbTool -s 2048 -o /home/wulsic/D802MULTIROM/kernel/out/g2/dt.img arch/arm/boot/
 else
 	echo "No build found..."
 	exit 0;
@@ -177,7 +177,7 @@ fi
 
 echo "Making boot.img..."
 if [ -f arch/arm/boot/"$kerneltype" ]; then
-	./mkbootimg --kernel /home/renderbroken/android/source/out/g2/"$kerneltype" --ramdisk $ramdisk --cmdline "$cmdline" --base $base --pagesize $pagesize --offset $ramdisk_offset --tags-addr $tags_offset --dt /home/renderbroken/android/source/out/g2/dt.img -o ozip/boot.img
+	./mkbootimg --kernel /home/wulsic/D802MULTIROM/kernel/out/g2/"$kerneltype" --ramdisk $ramdisk --cmdline "$cmdline" --base $base --pagesize $pagesize --offset $ramdisk_offset --tags-addr $tags_offset --dt /home/wulsic/D802MULTIROM/kernel/g2/dt.img -o ozip/boot.img
 else
 	echo "No build found..."
 	exit 0;
@@ -193,5 +193,6 @@ cd ozip
 zip -r ../"$kernel"-"$rom"_"$variant"-bumped-R.zip .
 mv ../"$kernel"-"$rom"_"$variant"-bumped-R.zip $build
 cd ..
-rm -rf /home/renderbroken/android/source/out/g2/*
+rm -rf /home/wulsic/D802MULTIROM/kernel/out/g2/*
 echo "Done..."
+exec $shell
