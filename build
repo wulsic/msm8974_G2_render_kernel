@@ -8,6 +8,11 @@ toolchain=/home/wulsic/D802MULTIROM/kernel/toolchains/g2-linux-gnueabi-4.9.3/bin
 
 ##### Test Toolchain
 #toolchain=/home/wulsic/D802MULTIROM/kernel/toolchains/linaro-arm-eabi-4.10/bin
+toolchain=/home/renderbroken/android/source/toolchains/g2-linux-gnueabi-4.9.3/bin
+#####
+
+##### Test Toolchain
+#toolchain=/home/renderbroken/android/source/toolchains/linaro-arm-eabi-4.10/bin
 #####
 
 toolchain2="arm-eabi-"
