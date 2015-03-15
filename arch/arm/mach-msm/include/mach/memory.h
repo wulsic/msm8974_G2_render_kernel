@@ -26,7 +26,6 @@
 #else
 #error "Adress for kexec hardboot page not defined"
 #endif
-#endif
 
 #define MAX_PHYSMEM_BITS 32
 #define SECTION_SIZE_BITS 28
